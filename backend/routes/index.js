@@ -4,7 +4,9 @@ const { login, createUser } = require('../controllers/users');
 const auth = require('../middlewares/auth');
 const NotFound = require('../errors/not_found');
 const myError = require('../middlewares/error');
+const { requestLogger, errorLogger } = require('../middlewares/logger');
 
+router.use(requestLogger);
 router.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -28,6 +30,7 @@ router.use('*', (req, res, next) => {
   next(new NotFound());
 });
 
+router.use(errorLogger);
 router.use(errors());
 router.use(myError);
 
