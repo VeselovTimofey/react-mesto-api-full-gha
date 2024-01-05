@@ -1,0 +1,13 @@
+.element__like-frame {
+  justify-self: end;
+  margin: 22px 20px 22px 0;
+  width: 22px;
+  height: 35px;
+  grid-row: 2/3;
+  /* autoprefixer: off */
+  grid-column: 2/3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
