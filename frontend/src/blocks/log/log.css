@@ -1,0 +1,7 @@
+.log {
+  display: flex;
+  flex-direction: column;
+  gap: 49px;
+  max-width: 358px;
+  margin: 60px auto 0 auto;
+}
