@@ -9,7 +9,7 @@
 
 ## Ссылки на проект
 
-IP-адрес x.x.x.x
+IP-адрес 51.250.91.149
 
 Frontend https://veselov.students.nomoredomainsmonster.ru
 

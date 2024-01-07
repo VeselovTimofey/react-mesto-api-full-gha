@@ -53,7 +53,7 @@ class ApiAuth {
     }
 }
 
-const mestoApiAuth = new ApiAuth('https://auth.nomoreparties.co', {
+const mestoApiAuth = new ApiAuth('https://api.veselov.students.nomoredomainsmonster.ru/', {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
 })
