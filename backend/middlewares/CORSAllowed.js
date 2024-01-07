@@ -1,7 +1,10 @@
+/* eslint-disable consistent-return */
 /* eslint-disable quotes */
 const allowedCors = [
   'https://praktikum.tk',
   'http://praktikum.tk',
+  'https://veselov.students.nomoredomainsmonster.ru',
+  'https://api.veselov.students.nomoredomainsmonster.ru',
   'localhost:3000',
 ];
 
@@ -17,6 +20,7 @@ function checkCORS(req, res, next) {
   if (method === 'OPTIONS') {
     res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
     res.header('Access-Control-Allow-Headers', requestHeaders);
+    return res.end();
   }
 
   next();
