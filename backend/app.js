@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const checkCORS = require('./middlewares/CORSAllowed');
 
 const {
   PATHDB = 'mongodb://localhost:27017/mestodb',
@@ -11,6 +12,8 @@ const app = express();
 app.use(express.json());
 
 mongoose.connect(PATHDB, {});
+
+app.use(checkCORS);
 
 app.use('/', require('./routes/index'));
 
