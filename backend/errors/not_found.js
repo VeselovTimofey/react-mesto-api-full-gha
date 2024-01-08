@@ -5,7 +5,6 @@ class NotFound extends Error {
     super(message);
     this.name = NotFound;
     this.statusCode = http2.constants.HTTP_STATUS_NOT_FOUND;
-    this.message = 'Неправильный путь.';
   }
 }
 

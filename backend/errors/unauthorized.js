@@ -5,7 +5,6 @@ class Unauthorized extends Error {
     super(message);
     this.name = Unauthorized;
     this.statusCode = http2.constants.HTTP_STATUS_UNAUTHORIZED;
-    this.message = 'Необходима авторизация.';
   }
 }
 

@@ -1,7 +1,11 @@
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const User = require('../models/user');
-const LoginDeny = require('../errors/login_deny');
+const Unauthorized = require('../errors/unauthorized');
+const NotFound = require('../errors/not_found');
+const BadRequest = require('../errors/bad_request');
+const Conflict = require('../errors/conflict');
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -16,7 +20,13 @@ const getUserById = (req, res, next) => {
         res.send({ data: user });
       }
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      if (err instanceof mongoose.Error.DocumentNotFoundError) {
+        next(new NotFound('Запрашиваемый пользователь не найден.'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const createUser = (req, res, next) => {
@@ -42,7 +52,15 @@ const createUser = (req, res, next) => {
         },
       });
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      if (err instanceof mongoose.Error.ValidationError) {
+        next(new BadRequest(`Были переданы некорректные данные: ${err.message}`));
+      } else if (err.name === 'MongoServerError' && err.code === 11000) {
+        next(new Conflict('Такой email уже зарегистрирован.'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const _userUpdateLogic = (req, res, body, next) => {
@@ -50,7 +68,13 @@ const _userUpdateLogic = (req, res, body, next) => {
     .then((user) => {
       res.send({ data: user });
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      if (err instanceof mongoose.Error.DocumentNotFoundError) {
+        next(new NotFound('Запрашиваемый пользователь не найден.'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 function updateUserDecorator(func) {
@@ -76,7 +100,7 @@ const login = (req, res, next) => {
     .then((token) => {
       res.cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true }).send({ email: req.body.email });
     })
-    .catch((err) => next(new LoginDeny(err)));
+    .catch((err) => next(new Unauthorized(err.message)));
 };
 
 const getMe = (req, res, next) => {
@@ -87,7 +111,13 @@ const getMe = (req, res, next) => {
         res.send({ data: user });
       }
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      if (err instanceof mongoose.Error.DocumentNotFoundError) {
+        next(new NotFound('Запрашиваемый пользователь не найден.'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports = {

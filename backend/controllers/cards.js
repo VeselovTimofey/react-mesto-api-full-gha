@@ -1,5 +1,8 @@
+const mongoose = require('mongoose');
 const Card = require('../models/card');
-const SomeoneElseCard = require('../errors/someone_else_card');
+const Forbidden = require('../errors/forbidden');
+const BadRequest = require('../errors/bad_request');
+const NotFound = require('../errors/not_found');
 
 const getCards = (req, res, next) => {
   Card.find({})
@@ -13,14 +16,20 @@ const createCard = (req, res, next) => {
 
   Card.create({ name, link, owner })
     .then((card) => res.send({ data: card }))
-    .catch((err) => next(err));
+    .catch((err) => {
+      if (err instanceof mongoose.Error.ValidationError) {
+        next(new BadRequest(`Были переданы некорректные данные: ${err.message}`));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId).orFail()
     .then((card) => {
       if (req.user._id !== card.owner._id.valueOf()) {
-        throw new SomeoneElseCard();
+        throw new Forbidden('Нельзя удалять чужую карточку.');
       }
       Card.findByIdAndDelete(req.params.cardId).orFail()
         .then((oldCard) => {
@@ -28,9 +37,21 @@ const deleteCard = (req, res, next) => {
             res.send({ data: oldCard });
           }
         })
-        .catch((err) => next(err));
+        .catch((err) => {
+          if (err instanceof mongoose.Error.DocumentNotFoundError) {
+            next(new NotFound('Запрашиваемая карточка не найдена.'));
+          } else {
+            next(err);
+          }
+        });
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      if (err instanceof mongoose.Error.DocumentNotFoundError) {
+        next(new NotFound('Запрашиваемая карточка не найдена.'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const likeCard = (req, res, next) => {
@@ -44,7 +65,13 @@ const likeCard = (req, res, next) => {
         res.send({ data: card });
       }
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      if (err instanceof mongoose.Error.DocumentNotFoundError) {
+        next(new NotFound('Запрашиваемая карточка не найдена.'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const dislikeCard = (req, res, next) => {
@@ -58,7 +85,13 @@ const dislikeCard = (req, res, next) => {
         res.send({ data: card });
       }
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      if (err instanceof mongoose.Error.DocumentNotFoundError) {
+        next(new NotFound('Запрашиваемая карточка не найдена.'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports = {

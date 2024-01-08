@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
 
   try {
     if (!cookie) {
-      throw new Unauthorized();
+      throw new Unauthorized('Необходима авторизация.');
     }
   } catch (err) {
     next(err);

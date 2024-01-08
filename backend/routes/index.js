@@ -3,7 +3,6 @@ const { celebrate, Joi } = require('celebrate');
 const { login, createUser } = require('../controllers/users');
 const auth = require('../middlewares/auth');
 const NotFound = require('../errors/not_found');
-const avatarReqularExpressions = require('../constants/reqular_expressions');
 
 router.get('/crash-test', () => {
   setTimeout(() => {
@@ -22,7 +21,7 @@ router.post('/signup', celebrate({
     password: Joi.string().required(),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().regex(new RegExp(avatarReqularExpressions)),
+    avatar: Joi.string().regex(/^https?:\/\/w?w?w?\.?[a-z0-9-._~:/?#[\]@!$&'()*+,;=]{5,}#?/),
   }),
 }), createUser);
 
@@ -30,7 +29,7 @@ router.use('/users', auth, require('./users'));
 router.use('/cards', auth, require('./cards'));
 
 router.use('*', auth, (req, res, next) => {
-  next(new NotFound());
+  next(new NotFound('Неправильный путь.'));
 });
 
 module.exports = router;
