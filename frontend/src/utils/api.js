@@ -15,7 +15,9 @@ class Api {
     }
 
     getUserInfo() {
-        return this._sendRequest(this._baseUrl + 'users/me', { 
+        return this._sendRequest(this._baseUrl + 'users/me', {
+            method: 'GET',
+            credentials: 'include',
             headers: this._token
         })
     }
@@ -23,6 +25,7 @@ class Api {
     patchUserInfo(newUserInfo) {
         return this._sendRequest(this._baseUrl + 'users/me', {
             method: 'PATCH',
+            credentials: 'include',
             headers: this._token,
             body: JSON.stringify({
               name: newUserInfo.name,
@@ -33,7 +36,8 @@ class Api {
 
     getFirstCards() {
         return this._sendRequest(this._baseUrl + 'cards', {
-            method: 'GET', 
+            method: 'GET',
+            credentials: 'include', 
             headers: this._token
         })
     }
@@ -42,6 +46,7 @@ class Api {
     postNewCard(newCard) {
         return this._sendRequest(this._baseUrl + 'cards', {
             method: 'POST',
+            credentials: 'include',
             headers: this._token,
             body: JSON.stringify({
               name: newCard.name,
@@ -53,6 +58,7 @@ class Api {
     deleteCard(idCard) {
         return this._sendRequest(this._baseUrl + `cards/${idCard}`, {
             method: 'DELETE',
+            credentials: 'include',
             headers: this._token
         })
     }
@@ -60,6 +66,7 @@ class Api {
     putLike(idCard) {
         return this._sendRequest(this._baseUrl + `cards/${idCard}/likes`, {
             method: 'PUT',
+            credentials: 'include',
             headers: this._token
         })
     }
@@ -67,6 +74,7 @@ class Api {
     deleteLike(idCard) {
         return this._sendRequest(this._baseUrl + `cards/${idCard}/likes`, {
             method: 'DELETE',
+            credentials: 'include',
             headers: this._token
         })
     }
@@ -74,14 +82,14 @@ class Api {
     changeAvatar(data) {
         return this._sendRequest(this._baseUrl + `users/me/avatar`, {
             method: 'PATCH',
+            credentials: 'include',
             headers: this._token,
             body: JSON.stringify({avatar: data.avatar})
         })
     }
 }
 
-const mestoApi = new Api('https://api.veselov.students.nomoredomainsmonster.ru', {
-    authorization: 'a28ab119-f4d7-4d6c-a1e8-0ea16011e1f4',
+const mestoApi = new Api('https://api.veselov.students.nomoredomainsmonster.ru/', {
     'Content-Type': 'application/json'
 })
 

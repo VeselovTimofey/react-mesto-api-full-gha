@@ -18,8 +18,8 @@ class Card extends React.Component {
   }
 
   render() {
-    const isOwn = this.props.cardInfo.owner._id === this.context._id;
-    const isLiked = this.props.cardInfo.likes.some(i => i._id === this.context._id);
+    const isOwn = this.props.cardInfo.owner === this.context._id;
+    const isLiked = this.props.cardInfo.likes.some(i => i === this.context._id);
     const cardLikeButtonClassName = (`element__like ${isLiked && 'element__like_active'}`);
 
     return (

@@ -28,6 +28,8 @@ class ApiAuth {
     signin(dataUser) {
         return fetch(this._baseUrl + `/signin`, {
             method: 'POST',
+            credentials: 'include',
+            secure: true,
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 password: dataUser.password,
@@ -39,12 +41,12 @@ class ApiAuth {
         })
     }
 
-    verification(jwt) {
+    verification() {
         return fetch(this._baseUrl + `/users/me`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${jwt}`
             },
         })
         .then((response) => {

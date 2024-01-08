@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const checkCORS = require('./middlewares/CORSAllowed');
 
 const {
-  PATHDB = 'mongodb://localhost:27017/mestodb',
+  PATHDB = 'mongodb://127.0.0.1:27017/mestodb',
   PORT = 3000,
 } = process.env;
 const app = express();

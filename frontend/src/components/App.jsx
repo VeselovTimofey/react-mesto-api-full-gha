@@ -41,17 +41,15 @@ class App extends React.Component {
   getUserAndCardInformation() {
     Promise.all([mestoApi.getUserInfo(), mestoApi.getFirstCards()])
       .then(([newUserInfo, firstCards]) => {
-        this.setState({cards: firstCards})
-        this.setState({currentUser: newUserInfo})
+        this.setState({cards: firstCards.data.reverse()})
+        this.setState({currentUser: newUserInfo.data})
       })
       .catch(console.error)
   }
 
   verificationUser() {
-    const jwt = localStorage.getItem('jwt');
-
-    if (jwt) {
-      mestoApiAuth.verification(jwt)
+    if (this.state.isLoggedIn) {
+      mestoApiAuth.verification()
         .then((data) => {
           if(data) {
             this.setState({
@@ -91,17 +89,17 @@ class App extends React.Component {
   }
 
   handleCardLike = (cardInfo) => {
-    const isLiked = cardInfo.likes.some(i => i._id === this.state.currentUser._id);
+    const isLiked = cardInfo.likes.some(i => i === this.state.currentUser._id);
     if (isLiked) {
       mestoApi.deleteLike(cardInfo._id)
         .then((newCard) => {this.setState((state) => {
-          return {cards: state.cards.map((card) => card._id === cardInfo._id ? newCard : card)}
+          return {cards: state.cards.map((card) => card._id === cardInfo._id ? newCard.data : card)}
         })})
         .catch(console.error)
     } else {
       mestoApi.putLike(cardInfo._id)
         .then((newCard) => {this.setState((state) => {
-          return {cards: state.cards.map((card) => card._id === cardInfo._id ? newCard : card)}
+          return {cards: state.cards.map((card) => card._id === cardInfo._id ? newCard.data : card)}
         })})
         .catch(console.error)
     }
@@ -117,30 +115,27 @@ class App extends React.Component {
 
   handleUpdateUser(newUserValue) {
     mestoApi.patchUserInfo(newUserValue)
-      .then((userInfo) => {this.setState({currentUser: userInfo})})
+      .then((userInfo) => {this.setState({currentUser: userInfo.data})})
       .then(() => {this.closeAllPopups()})
       .catch(console.error)
   }
 
   handleUpdateAvatar(newAvatarValue) {
     mestoApi.changeAvatar(newAvatarValue)
-      .then((newAvatar) => {this.setState({currentUser: newAvatar})})
+      .then((newAvatar) => {this.setState({currentUser: newAvatar.data})})
       .then(() => {this.closeAllPopups()})
       .catch(console.error)
   }
 
   handleAddPlaceSubmit(newPlace) {
     mestoApi.postNewCard(newPlace)
-      .then((place) => {this.setState({cards: [place, ...this.state.cards]})})
+      .then((place) => {this.setState({cards: [place.data, ...this.state.cards]})})
       .then(() => {this.closeAllPopups()})
       .catch(console.error)
   }
 
   handleAuthorizationUser(dataUser) {
     mestoApiAuth.signin(dataUser)
-      .then((responce) => {
-        localStorage.setItem('jwt', responce.token);
-      })
       .then(() => {
         this.setState({
           userEmail: dataUser.email,
@@ -165,7 +160,6 @@ class App extends React.Component {
   }
 
   handleSignOut() {
-    localStorage.removeItem('jwt');
     this.setState({
       isLoggedIn: false,
       userEmail: '',
