@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 const Card = require('../models/card');
 const SomeoneElseCard = require('../errors/someone_else_card');
 

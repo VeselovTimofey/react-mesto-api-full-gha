@@ -1,10 +1,6 @@
-/* eslint-disable no-shadow */
-/* eslint-disable func-names */
-const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
 const User = require('../models/user');
-const NotValidEmail = require('../errors/notvalid_email');
 const LoginDeny = require('../errors/login_deny');
 
 const getUsers = (req, res, next) => {
@@ -27,14 +23,6 @@ const createUser = (req, res, next) => {
   const {
     name, email, password, about, avatar,
   } = req.body;
-
-  try {
-    if (!validator.isEmail(email)) {
-      Promise.reject(new NotValidEmail());
-    }
-  } catch (err) {
-    next(err);
-  }
 
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
@@ -66,14 +54,14 @@ const _userUpdateLogic = (req, res, body, next) => {
 };
 
 function updateUserDecorator(func) {
-  return function (req, res, next) {
+  return function updateUserFunction(req, res, next) {
     const { name, about } = req.body;
     func(req, res, { name, about }, next);
   };
 }
 
 function updateAvatarDecorator(func) {
-  return function (req, res, next) {
+  return function UpdateAvatarFunction(req, res, next) {
     const { avatar } = req.body;
     func(req, res, { avatar }, next);
   };
