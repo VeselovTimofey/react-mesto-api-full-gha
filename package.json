@@ -1,12 +1,13 @@
 {
-  "name": "express-mesto-gha",
+  "name": "mesto-react",
   "version": "0.1.0",
-  "description": "backend express project",
+  "description": "mesto-react",
   "main": "app.js",
   "scripts": {
     "lint": "npx eslint .",
     "dev": "nodemon app.js",
-    "start": "node app.js"
+    "start": "node app.js",
+    "build": "react-scripts build"
   },
   "author": "VeselovTimofey",
   "devDependencies": {
@@ -25,6 +26,22 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.3",
     "validator": "^13.11.0",
-    "winston": "^3.11.0"
+    "winston": "^3.11.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.3.0",
+    "react-scripts": "^5.0.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
