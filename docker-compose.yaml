@@ -13,18 +13,27 @@ services:
     container_name: mesto
     build: .
     environment:
-      - PATHDB=mongodb://mongodb:27017/mestodb,
-      - PORT = 3000
+      PATHDB: "mongodb://mongodb:27017/mestodb"
+      PORT: "3000"
     restart: always
     volumes:
-      - static_value:/app/static/
-      - media_value:/app/media/
+      - build:/app/build/
     ports:
-      - "8000:8000"
+      - "3000:3000"
     depends_on:
       - mongodb
 
+  nginx:
+    container_name: nginx
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - build:/var/html/
+    depends_on:
+      - mesto
+
 volumes:
   dbdata6:
-  static_value:
-  media_value:
+  build:
