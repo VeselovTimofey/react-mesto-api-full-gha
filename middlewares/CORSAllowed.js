@@ -1,11 +1,5 @@
 /* eslint-disable consistent-return */
-const allowedCors = [
-  'https://praktikum.tk',
-  'http://praktikum.tk',
-  'https://veselov.students.nomoredomainsmonster.ru',
-  'https://api.veselov.students.nomoredomainsmonster.ru',
-  'localhost:3000',
-];
+const allowedCors = ['*'];
 
 module.exports = (req, res, next) => {
   const { origin } = req.headers;

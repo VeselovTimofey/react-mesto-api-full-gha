@@ -37,7 +37,7 @@ class Api {
     getFirstCards() {
         return this._sendRequest(this._baseUrl + 'cards', {
             method: 'GET',
-            credentials: 'include', 
+            credentials: 'include',
             headers: this._token
         })
     }
@@ -89,7 +89,7 @@ class Api {
     }
 }
 
-const mestoApi = new Api('https://api.veselov.students.nomoredomainsmonster.ru/', {
+const mestoApi = new Api('https://127.0.0.1/api', {
     'Content-Type': 'application/json'
 })
 

@@ -21,7 +21,7 @@ class ApiAuth {
               })
         })
         .then((response) => {
-            return this._getResponseData(response)  
+            return this._getResponseData(response)
         })
     }
 
@@ -37,7 +37,7 @@ class ApiAuth {
             })
         })
         .then((response) => {
-            return this._getResponseData(response)  
+            return this._getResponseData(response)
         })
     }
 
@@ -50,12 +50,12 @@ class ApiAuth {
             },
         })
         .then((response) => {
-            return this._getResponseData(response)  
+            return this._getResponseData(response)
         })
     }
 }
 
-const mestoApiAuth = new ApiAuth('https://api.veselov.students.nomoredomainsmonster.ru', {
+const mestoApiAuth = new ApiAuth('https://127.0.0.1/api', {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
 })
